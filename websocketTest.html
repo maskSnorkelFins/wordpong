@@ -1,0 +1,99 @@
+<!-- 
+tutorial from socket.io
+https://socket.io/docs/v4/tutorial/introduction
+
+create websocket server
+// https://www.youtube.com/watch?v=3IKUKDf7mA0
+-->
+
+<!DOCTYPE html>
+<html>
+	<meta charset = "utf-8" />
+	<title>WebSocket Test</title>
+
+	<script language = "javascript" type = "text/javascript">
+
+		var server = new WebSocketServer("ws://localhost:8181");
+
+
+		var socket;
+		var wsUrl = "https://echo.websocket.org/";
+		var output;
+
+		function init() {
+			output = document.getElementById("output");
+			initWebSocket();
+		}
+
+
+		function initWebSocket() {
+			socket = new WebSocket(wsUrl);
+			/*
+			//declaration of binary data
+			socket.binaryType = 'arrayBuffer';
+			socket.binaryType = 'blob';
+			*/
+
+			// listeners
+			socket.onopen = function(event) { onOpen(event); }
+			socket.onclose = function(event) { onClose(event); }
+			socket.onmessage = function(event) { onMessage(event); }
+			socket.onerror = function(event) { onError(event); }
+		}
+
+
+		// handlers
+		function onOpen(event) {
+			console.log("connected");
+	
+			// send test message once connection established
+			testSend("can you hear me now?");
+	
+		}
+		function onClose(event) {
+			console.log("connection closed");
+			if (event.code != 1000) {// connection closed normally
+				if (!navigator.onLine) {
+					output.innerHTML = "You are offline. Please connect to the Internet and try again.";
+				}
+			}
+		}
+		function onMessage(event) {
+			console.log("onmessage fired");
+
+			// if (typeOf(event.data) === String) {
+			// 	// create JSON object
+			// 	let jsonObj = JSON.parse(event.data);
+			// 	let username = jsonObj.name;
+			// 	let message = jsonObj.message;
+			// 	console.log("Received data string");
+			// }
+
+
+			// if (event.data instanceof ArrayBuffer){
+			// 	let buffer = event.data;
+			// 	console.log("Received arraybuffer");
+			// }
+
+			socket.close(1000, "deliberate disconnect");
+		}
+		function onError(event) {
+			console.log("error: " + event.data);
+		}
+
+
+
+		function testSend(message) {
+			console.log("SENDING: " + message);
+			socket.send(message);
+		}
+	
+		window.addEventListener("load", init, false);
+	</script>
+</head>
+
+<body>
+	<h2>WebSocket Test</h2>
+	<div id="output"></div>
+</body>
+</html>

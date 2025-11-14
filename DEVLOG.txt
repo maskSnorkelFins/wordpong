@@ -1,0 +1,15 @@
+LONG TERM
+single player mode with CPU random selections
+
+non-scoring lifeline hints for players struggling –
+	pull from lists of short, low-scoring words, ensure that none have been used in game
+	also make them infrequently-used words (overnight database updates should refresh these lists)
+
+
+
+Tues 11/5/24
+detects whether y is vowel/consonant, flags each word with boolean array
+	traverse this boolean array for pattern detection
+
+
+
